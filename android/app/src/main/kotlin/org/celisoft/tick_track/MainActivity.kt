@@ -1,4 +1,4 @@
-package com.example.tick_track
+package org.celisoft.tick_track
 
 import io.flutter.embedding.android.FlutterActivity
 
