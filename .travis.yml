@@ -1,0 +1,22 @@
+language: dart
+dart: stable
+
+before_install:
+  - sudo apt-get -y install lib32stdc++6 curl
+
+install:
+  - git clone https://github.com/flutter/flutter.git -b stable
+  - ./flutter/bin/flutter doctor
+
+jobs:
+  include:
+    - stage: analyze
+      script: dartanalyzer --fatal-warnings --fatal-infos --verbose .
+
+stages:
+  - analyze
+
+cache:
+  directories:
+    - $HOME/.pub-cache
+    - .dart_tool/build
