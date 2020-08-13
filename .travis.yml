@@ -11,7 +11,7 @@ install:
 jobs:
   include:
     - stage: compile_android
-      script: ./flutter/bin/flutter build android
+      script: ./flutter/bin/flutter build apk
     - stage: compile_web
       script: ./flutter/bin/flutter build web
 
