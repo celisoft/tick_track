@@ -11,7 +11,7 @@ install:
 jobs:
   include:
     - stage: analyze
-      script: dartanalyzer --fatal-warnings --fatal-infos --verbose .
+      script: dartanalyzer --fatal-warnings --fatal-infos --verbose ./lib
 
 stages:
   - analyze
