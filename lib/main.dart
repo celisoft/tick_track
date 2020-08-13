@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ActivityRecord.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,17 +51,68 @@ class TickTrackHomePage extends StatefulWidget {
 }
 
 class _TickTrackHomePageState extends State<TickTrackHomePage> {
-  int _counter = 0;
+  ActivityRecord _activityRecord = new ActivityRecord();
 
-  void _incrementCounter() {
+  void _updateActivity() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _activityRecord.addNewGpsPoint();
     });
+  }
+
+  void _startActivity() {
+    setState(() {
+      _activityRecord.startTime = new DateTime.now();
+      _activityRecord.status = ActivityStatus.in_progress;
+    });
+  }
+
+  void _pauseActivity() {
+    setState(() {
+      _activityRecord.status = ActivityStatus.paused;
+    });
+  }
+
+  void _stopActivity() {
+    setState(() {
+      _activityRecord.status = ActivityStatus.stopped;
+    });
+  }
+
+  void _saveActivity() {
+    setState(() {
+      _activityRecord.saveToGpx();
+    });
+  }
+
+  FloatingActionButton _switchRecordStopIcon() {
+    if (_activityRecord.status == ActivityStatus.in_progress ||
+        _activityRecord.status == ActivityStatus.paused) {
+      return FloatingActionButton(
+          onPressed: _stopActivity,
+          tooltip: 'Stop activity',
+          child: Icon(Icons.stop));
+    } else {
+      return FloatingActionButton(
+          onPressed: _saveActivity,
+          tooltip: 'Save activity as GPX file',
+          child: Icon(Icons.save));
+    }
+  }
+
+  FloatingActionButton _switchPlayPauseIcon() {
+    if (_activityRecord.status == ActivityStatus.in_progress) {
+      return FloatingActionButton(
+        onPressed: _pauseActivity,
+        tooltip: 'Pause activity',
+        child: Icon(Icons.pause),
+      );
+    }else{
+      return FloatingActionButton(
+        onPressed: _startActivity,
+        tooltip: 'Start a new activity',
+        child: Icon(Icons.play_arrow),
+      );
+    }
   }
 
   @override
@@ -72,46 +124,49 @@ class _TickTrackHomePageState extends State<TickTrackHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '$_activityRecord',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: Container(
+            child: Row(
+          children: [
+            FloatingActionButton(
+              onPressed: _updateActivity,
+              tooltip: 'Add GPS point',
+              child: Icon(Icons.add),
+            ),
+            _switchPlayPauseIcon(),
+            _switchRecordStopIcon(),
+          ],
+        )));
   }
 }
