@@ -10,11 +10,14 @@ install:
 
 jobs:
   include:
-    - stage: analyze
-      script: dartanalyzer --fatal-warnings --fatal-infos --verbose ./lib
+    - stage: compile_android
+      script: ./flutter/bin/flutter build android
+    - stage: compile_web
+      script: ./flutter/bin/flutter build web
 
 stages:
-  - analyze
+  - compile_android
+  - compile_web
 
 cache:
   directories:
