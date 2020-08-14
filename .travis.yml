@@ -5,6 +5,8 @@ before_install:
   - sudo apt-get -y install lib32stdc++6 curl openjdk-8-jdk
 
 install:
+  - java -version
+  - echo $JAVA_OPTS
   - curl -o android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
   - unzip android-sdk.zip -d ./android-sdk
   - mkdir -p ~/.android/ && touch ~/.android/repositories.cfg
