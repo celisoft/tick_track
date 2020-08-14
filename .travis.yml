@@ -1,9 +1,5 @@
-matrix:
-  include:
-    - language: dart
-      dart: stable
-    - language: java
-      jdk: openjdk8
+language: dart
+dart: stable
 
 before_install:
   - sudo apt-get -y install lib32stdc++6 curl
