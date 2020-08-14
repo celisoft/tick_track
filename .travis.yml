@@ -1,14 +1,15 @@
-language: dart
-dart: stable
-
-jdk:
-  - openjdk8
+matrix:
+  include:
+    - language: dart
+      dart: stable
+    - language: java
+      jdk: openjdk8
 
 before_install:
   - sudo apt-get -y install lib32stdc++6 curl
 
 install:
-  - echo $JAVA_OPTS
+  - java -version && echo $JAVA_OPTS
   - curl -o android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
   - unzip android-sdk.zip -d ./android-sdk
   - mkdir -p ~/.android/ && touch ~/.android/repositories.cfg
