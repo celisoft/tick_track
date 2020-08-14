@@ -2,7 +2,8 @@ language: dart
 dart: stable
 
 before_install:
-  - sudo apt-get -y install lib32stdc++6 curl
+  - sudo apt-get -y remove --purge default-jdk
+  - sudo apt-get -y install lib32stdc++6 curl openjdk-8-jdk
 
 install:
   - java -version && echo $JAVA_OPTS
