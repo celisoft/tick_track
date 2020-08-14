@@ -2,11 +2,12 @@ language: dart
 dart: stable
 
 before_install:
-  - sudo apt-get -y install lib32stdc++6 curl default-jdk
+  - sudo apt-get -y install lib32stdc++6 curl openjdk-8-jdk
 
 install:
   - curl -o android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
   - unzip android-sdk.zip -d ./android-sdk
+  - mkdir -p ~/.android/ && touch ~/.android/repositories.cfg
   - ./android-sdk/tools/bin/sdkmanager --sdk_root=./android-sdk "build-tools;28.0.3" "emulator" "platform-tools" "platforms;android-28" "tools"
   - git clone https://github.com/flutter/flutter.git -b dev
   - ./flutter/bin/flutter doctor --android-licenses
